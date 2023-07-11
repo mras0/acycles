@@ -99,6 +99,31 @@ bool is_branch(opcode op)
     }
 }
 
+bool is_shift_rot(opcode op)
+{
+    switch (op) {
+    case opcode::asl:
+    case opcode::asr:
+    case opcode::lsl:
+    case opcode::lsr:
+    case opcode::rol:
+    case opcode::ror:
+    //case opcode::roxl:
+    //case opcode::roxr:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool has_embeeded_immediate(const instruction& ins)
+{
+    const auto op = ins.op();
+    if (op == opcode::moveq || op == opcode::addq || op == opcode::subq || (is_shift_rot(op) && ins.arg(0).val() == ea_immediate))
+        return true;
+    return is_branch(op) && ins.opsize() == 'b';
+}
+
 std::ostream& operator<<(std::ostream& os, oep_class c)
 {
     switch (c) {
@@ -229,6 +254,11 @@ int instruction::cylces() const
         std::ostringstream oss;
         oss << "TODO: Implement cycles() for " << *this << "\n";
         throw std::runtime_error { oss.str() };
+    }
+
+    if (op_ == opcode::divs || op_ == opcode::divu) {
+        // TODO: Note 3 for divx.l (one extra cycle for some addressing modes)
+        base = size_ == 'l' ? 38 : 22; // (22 is upper bound for word-sized divisions due to conditional exit points)
     }
 
     int mcycles = mem_cycles();

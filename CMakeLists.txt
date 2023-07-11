@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(060cycles C CXX)
+project(acycles C CXX)
 
 if (MSVC)
     set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Supported build configurations" FORCE)
@@ -19,13 +19,19 @@ if (WIN32)
     add_definitions("-DWIN32 -D_WIN32 -DUNICODE -D_UNICODE")
 endif()
 
-add_executable(060cycles
-    060cycles.cpp
+add_library(acycles_lib STATIC
     util.h
-    ea.cpp
-    ea.h
-    instruction.cpp
-    instruction.h
-    parser.cpp
-    parser.h
+    ea.cpp ea.h
+    instruction.cpp instruction.h
+    parser.cpp parser.h
+    cpu_model.h
+    cpu_model_020.cpp cpu_model_020.h
+    cpu_model_060.cpp cpu_model_060.h
     )
+
+add_executable(acycles main.cpp)
+target_link_libraries(acycles acycles_lib)
+
+add_executable(acycles_test acycles_test.cpp)
+target_link_libraries(acycles_test acycles_lib)
+

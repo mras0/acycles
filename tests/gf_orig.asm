@@ -1,0 +1,11 @@
+				move.w	d5,d3
+				lsr.w	#8,d3
+				move.b	d3,d6
+				move.w	d0,d3
+				move.b	(a0,d6.w*4),d3
+				add.w	d1,d0
+				add.l	d2,d5
+				and.l	d4,d5
+				move.l	d5,d6
+				swap	d6
+				move.b	(a1,d3.w),(a3)+

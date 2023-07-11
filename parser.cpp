@@ -147,7 +147,17 @@ ea parser::parse_ea()
             error("Invalid EA (bare PC)");
         return ea { static_cast<uint8_t>(*reg) };
     }
-    // TODO: Check for '-'
+    PARSER_EXPECT_NOT_EOL();
+    if (line_[pos_] == '-' && pos_ + 1 < line_.size() && line_[pos_ + 1] == '(') {
+        pos_ += 2;
+        PARSER_EXPECT_NOT_EOL();
+        auto r = parse_reg();
+        if (!r || !is_areg(*r))
+            error("Invalid register for pre-decrement mode");
+        PARSER_EXPECT(')');
+        return ea { static_cast<uint8_t>((static_cast<uint8_t>(*r) & ea_xn_mask) | ea_m_A_ind_pre << ea_m_shift) };
+    }
+
     std::optional<uint32_t> dispval {};
     if (line_[pos_] != '(') {
         dispval = parse_number();
@@ -163,14 +173,14 @@ ea parser::parse_ea()
         PARSER_EXPECT_NOT_EOL();
 
         auto basereg = parse_reg();
-        if (!basereg || !is_areg(*basereg))
-            error("Invalid basre register"); // TODO: PC (and different order...)
+        if (!basereg || (!is_areg(*basereg) && *basereg != eareg::pc))
+            error("Invalid base register"); // TODO: PC (and different order...)
 
         PARSER_EXPECT_NOT_EOL();
         if (line_[pos_] == ')') {
             pos_++;
             if (pos_ < line_.size() && line_[pos_] == '+') {
-                if (dispval)
+                if (dispval || *basereg == eareg::pc)
                     error("Invalid EA");
                 ++pos_;
                 return ea { static_cast<uint8_t>((static_cast<uint8_t>(*basereg) & ea_xn_mask) | ea_m_A_ind_post << ea_m_shift) };
@@ -179,7 +189,13 @@ ea parser::parse_ea()
                 int32_t d = *dispval;
                 if (d < SHRT_MIN || d > SHRT_MAX)
                     error("Displacmeent out of range");
+                if (*basereg == eareg::pc)
+                    return ea { ea_pc_disp16, *dispval };
                 return ea { static_cast<uint8_t>((static_cast<uint8_t>(*basereg) & ea_xn_mask) | ea_m_A_ind_disp16 << ea_m_shift), *dispval };
+            }
+            if (*basereg == eareg::pc) {
+                // Bit of a hack, but just assume it's displaced by some named constant
+                return ea { ea_pc_disp16, 0 };
             }
             return ea { static_cast<uint8_t>((static_cast<uint8_t>(*basereg) & ea_xn_mask) | ea_m_A_ind << ea_m_shift) };
         }

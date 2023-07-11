@@ -45,6 +45,7 @@ enum ea_other {
 constexpr uint8_t ea_m_shift = 3;
 constexpr uint8_t ea_xn_mask = 7;
 
+constexpr uint8_t ea_pc_disp16 = ea_m_Other << ea_m_shift | ea_other_pc_disp16;
 constexpr uint8_t ea_pc_index = ea_m_Other << ea_m_shift | ea_other_pc_index;
 constexpr uint8_t ea_immediate = ea_m_Other << ea_m_shift | ea_other_imm;
 

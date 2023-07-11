@@ -121,7 +121,8 @@ std::ostream& operator<<(std::ostream& os, const ea& e)
             return os << "$" << std::hex << static_cast<uint16_t>(e.extra()) << std::dec << ".w";
         case ea_other_abs_l:
             return os << "$" << std::hex << e.extra() << std::dec;
-        // case ea_other_pc_disp16:
+        case ea_other_pc_disp16:
+            return os << static_cast<int16_t>(e.extra() & 0xffff) << "(pc)";
         // case ea_other_pc_index:
         case ea_other_imm:
             return os << "#" << static_cast<int>(e.extra());

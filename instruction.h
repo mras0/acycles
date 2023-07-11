@@ -32,6 +32,8 @@
     X(ble  ,false ,1 ,1 ,poep_only   )  \
     X(cmp  ,true  ,2 ,1 ,poep_or_soep)  \
     X(dbra ,false ,2 ,1 ,poep_only   )  \
+    X(divu ,true  ,2 ,0 ,poep_only   )  \
+    X(divs ,true  ,2 ,0 ,poep_only   )  \
     X(eor  ,true  ,2 ,1 ,poep_or_soep)  \
     X(lsl  ,true  ,2 ,1 ,poep_or_soep)  \
     X(lsr  ,true  ,2 ,1 ,poep_or_soep)  \
@@ -39,8 +41,8 @@
     X(moveq,false ,2 ,1, poep_or_soep)  \
     X(not_ ,true  ,1 ,1, poep_or_soep)  \
     X(neg  ,true  ,1 ,1, poep_or_soep)  \
-    X(mulu ,false ,2 ,2 ,poep_only   )  \
-    X(muls ,false ,2 ,2 ,poep_only   )  \
+    X(mulu ,true  ,2 ,2 ,poep_only   )  \
+    X(muls ,true  ,2 ,2 ,poep_only   )  \
     X(or_  ,true  ,2 ,1 ,poep_or_soep)  \
     X(rol  ,true  ,2 ,1 ,poep_or_soep)  \
     X(ror  ,true  ,2 ,1 ,poep_or_soep)  \
@@ -49,6 +51,7 @@
     X(subq ,true  ,2 ,1 ,poep_or_soep)  \
     X(subx ,true  ,2 ,1 ,poep_only   )  \
     X(swap ,true  ,1 ,1 ,poep_only   )  \
+    X(tst  ,false ,1 ,1, poep_or_soep)  \
 
 enum class opcode {
 #define X(o, rmw, nea, cycles, classi) o,
@@ -61,6 +64,7 @@ opcode opcode_from_string(const std::string& str);
 int num_ea(opcode op);
 bool valid_size(char ch);
 bool is_branch(opcode op);
+bool is_shift_rot(opcode op);
 
 enum class oep_class {
     poep_or_soep,
@@ -135,5 +139,6 @@ private:
     ea ea_[2];
 };
 std::ostream& operator<<(std::ostream& os, const instruction&);
+bool has_embeeded_immediate(const instruction& ins); // If the immediate is embedded in the instruction
 
 #endif
