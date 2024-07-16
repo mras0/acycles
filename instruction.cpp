@@ -214,6 +214,9 @@ oep_class instruction::oep_classify() const
         // pOEP-until-last if destination is mem and source is mem/immediate
         return ea_[1].is_mem() && (ea_[0].is_mem() || ea_[0].val() == ea_immediate) ? oep_class::poep_until_last : oep_class::poep_or_soep;
     }
+
+    // TODO: Check if really standard instruction (i.e. only a single memory access)
+
     switch (op_) {
 #define X(o, rmw, nea, cycles, classi) case opcode::o: return oep_class::classi;
         OPCODES(X)

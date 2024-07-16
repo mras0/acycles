@@ -30,11 +30,14 @@
     X(blt  ,false ,1 ,1 ,poep_only   )  \
     X(bgt  ,false ,1 ,1 ,poep_only   )  \
     X(ble  ,false ,1 ,1 ,poep_only   )  \
-    X(cmp  ,true  ,2 ,1 ,poep_or_soep)  \
+    X(clr  ,true  ,1 ,1, poep_or_soep)  \
+    X(cmp  ,false ,2 ,1 ,poep_or_soep)  \
     X(dbra ,false ,2 ,1 ,poep_only   )  \
     X(divu ,true  ,2 ,0 ,poep_only   )  \
     X(divs ,true  ,2 ,0 ,poep_only   )  \
     X(eor  ,true  ,2 ,1 ,poep_or_soep)  \
+    X(ext  ,false ,1 ,1 ,poep_or_soep)  \
+    X(extb ,false ,1 ,1 ,poep_or_soep)  \
     X(lsl  ,true  ,2 ,1 ,poep_or_soep)  \
     X(lsr  ,true  ,2 ,1 ,poep_or_soep)  \
     X(move ,false ,2 ,1 ,poep_or_soep)  \
@@ -47,6 +50,22 @@
     X(rol  ,true  ,2 ,1 ,poep_or_soep)  \
     X(ror  ,true  ,2 ,1 ,poep_or_soep)  \
     X(rts  ,false ,0 ,1 ,poep_or_soep)  \
+    X(scc  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(scs  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(seq  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(sf   ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(sge  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(sgt  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(shi  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(sle  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(sls  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(slt  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(smi  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(sne  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(spl  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(st   ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(svc  ,false ,1 ,1 ,poep_but_allows_soep )  \
+    X(svs  ,false ,1 ,1 ,poep_but_allows_soep )  \
     X(sub  ,true  ,2 ,1 ,poep_or_soep)  \
     X(subq ,true  ,2 ,1 ,poep_or_soep)  \
     X(subx ,true  ,2 ,1 ,poep_only   )  \
